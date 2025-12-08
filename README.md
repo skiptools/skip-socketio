@@ -1,8 +1,8 @@
 # SkipSocketIO
 
-This is a [Skip](https://skip.tools) Swift/Kotlin library project containing the following modules:
-
-SkipSocketIO
+This is a [Skip](https://skip.tools) Swift/Kotlin library project that
+abstracts the Socket.io [iOS](https://socket.io/blog/socket-io-on-ios/)
+and [Android](https://socket.io/blog/native-socket-io-and-android/) APIs.
 
 ## Building
 
