@@ -17,7 +17,7 @@ let package = Package(
     targets: [
         .target(name: "SkipSocketIO", dependencies: [
             .product(name: "SkipFoundation", package: "skip-foundation"),
-            .product(name: "SocketIO", package: "socket.io-client-swift"),
+            .product(name: "SocketIO", package: "socket.io-client-swift", condition: .when(platforms: [.macOS, .iOS, .tvOS, .watchOS, .macCatalyst])),
         ], resources: [.process("Resources")], plugins: [.plugin(name: "skipstone", package: "skip")]),
         .testTarget(name: "SkipSocketIOTests", dependencies: [
             "SkipSocketIO",
