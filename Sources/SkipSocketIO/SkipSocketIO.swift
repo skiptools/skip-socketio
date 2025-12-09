@@ -6,9 +6,11 @@ import Foundation
 #if !SKIP
 import SocketIO
 #else
+import io.socket.client.Ack
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.client.SocketOptionBuilder
+import io.socket.emitter.Emitter
 #endif
 
 /// Abstraction of the socket.io client API for [swift](https://nuclearace.github.io/Socket.IO-Client-Swift/Classes/SocketIOClient.html) and [Java](https://socketio.github.io/socket.io-client-java/apidocs/io/socket/client/package-summary.html)
@@ -53,26 +55,34 @@ public class SkipSocketIOClient {
         return // needed because Java API returns a Socket instance
     }
 
-    /* TODO:
+    public func on(event: String, callback: @escaping ([Any]) -> ()) {
+        #if !SKIP
+        socket.on(event) { data, ack in
+            callback(data)
+        }
+        #else
+        socket.on(event, Emitter.Listener { data in
+            var dataArray: [Any] = []
+            for datum in data {
+                dataArray.append(datum)
+            }
+            callback(dataArray)
+        })
+        #endif
+    }
 
-     socket.on(clientEvent: .connect) {data, ack in
-         print("socket connected")
-     }
-
-     socket.on("currentAmount") {data, ack in
-         guard let cur = data[0] as? Double else { return }
-
-         socket.emitWithAck("canUpdate", cur).timingOut(after: 0) {data in
-             if data.first as? String ?? "passed" == SocketAckStatus.noAck {
-                 // Handle ack timeout
-             }
-
-             socket.emit("update", ["amount": cur + 2.50])
-         }
-
-         ack.with("Got your currentAmount", "dude")
-     }
-     */
+    public func emit(event: String, items: [Any], completion: @escaping () -> ()) {
+        #if !SKIP
+        socket.emit(event, with: items.compactMap({ $0 as? SocketData }), completion: {
+            completion()
+        })
+        #else
+        let args = items.kotlin().toTypedArray()
+        socket.emit(event, args, Ack { _ in
+            completion()
+        })
+        #endif
+    }
 }
 
 /// Wrapper for [`SocketIOClientOption`](https://nuclearace.github.io/Socket.IO-Client-Swift/Enums/SocketIOClientOption.html)
