@@ -55,7 +55,7 @@ public class SkipSocketIOClient {
         return // needed because Java API returns a Socket instance
     }
 
-    public func on(event: String, callback: @escaping ([Any]) -> ()) {
+    public func on(_ event: String, callback: @escaping ([Any]) -> ()) {
         #if !SKIP
         socket.on(event) { data, ack in
             callback(data)
@@ -71,7 +71,9 @@ public class SkipSocketIOClient {
         #endif
     }
 
-    public func emit(event: String, items: [Any], completion: @escaping () -> ()) {
+    /// https://nuclearace.github.io/Socket.IO-Client-Swift/Classes/SocketIOClient.html#/s:8SocketIO0A8IOClientC4emit__10completionySS_AA0A4Data_pdyycSgtF
+    /// https://socketio.github.io/socket.io-client-java/apidocs/io/socket/client/Socket.html#emit(java.lang.String,java.lang.Object%5B%5D,io.socket.client.Ack)
+    public func emit(_ event: String, _ items: [Any], completion: @escaping () -> () = { }) {
         #if !SKIP
         socket.emit(event, with: items.compactMap({ $0 as? SocketData }), completion: {
             completion()
