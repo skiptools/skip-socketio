@@ -12,7 +12,18 @@ final class SkipSocketIOTests: XCTestCase {
 
     func testSkipSocketIO() throws {
         //logger.log("running testSkipSocketIO")
-        let socket = SkipSocketIOClient(socketURL: URL(string: "https://example.org")!)
+        let socket = SkipSocketIOClient(socketURL: URL(string: "https://example.org")!, options: [
+            .compress,
+            .path("/mypath/"),
+            .secure(false),
+            .forceNew(false),
+            .forcePolling(false),
+            .reconnects(true),
+            .reconnectAttempts(5),
+            .reconnectWait(2),
+            .reconnectWaitMax(10),
+            .extraHeaders(["X-Custom-Header": "Value"]),
+        ])
         socket.connect()
         socket.disconnect()
     }
