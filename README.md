@@ -1,6 +1,6 @@
 # SkipSocketIO
 
-This is a [Skip](https://skip.tools) Swift/Kotlin library project that
+This is a [Skip](https://skip.dev) Swift/Kotlin library project that
 abstracts the Socket.io [iOS](https://socket.io/blog/socket-io-on-ios/)
 and [Android](https://socket.io/blog/native-socket-io-and-android/) APIs.
 
@@ -78,7 +78,7 @@ socket.disconnect()
 ## Building
 
 This project is a Swift Package Manager module that uses the
-[Skip](https://skip.tools) plugin to transpile Swift into Kotlin.
+[Skip](https://skip.dev) plugin to transpile Swift into Kotlin.
 
 Building the module requires that Skip be installed using
 [Homebrew](https://brew.sh) with `brew install skiptools/skip/skip`.
